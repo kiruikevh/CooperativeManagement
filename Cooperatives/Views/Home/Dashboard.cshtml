@@ -1,0 +1,116 @@
+﻿@using Cooperatives.Models
+@model dynamic
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string profileComplete = Convert.ToString(Session["Email"]);
+
+}
+<div class="content container-fluid">
+    <div class="row">
+
+        <div class="alert alert-info alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>             
+                    <strong>Welcome @Session["fullname"]</strong>@TempData["success"];
+        </div>
+
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table id="myAllAdvertisedVacancies" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Vacancy No</th>
+                            <th>Job Title/Designation</th>
+                            <th>Employment Type</th>
+                            <th>Application Deadline</th>
+                            <th>View</th>
+                            <th>Apply</th>
+                            <th>Download</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/assets/js/jquery-3.2.1.min.js"></script>
+@*<script>
+        $(document).ready(function () {
+            var oTable = $('#myAllAdvertisedVacancies').DataTable({
+                "ajax": {
+                    "url": '../Home/GetAdvertisedJobVacancies',
+                    "type" : "GET",
+                    "datatype" : "json"
+                },
+                "columns": [
+                    { "data": "Document_No", "autoWidth": true },
+                    { "data": "Job_Title_Designation", "autoWidth": true },
+                    { "data": "Employment_Type", "autoWidth": true },
+                    { "data": "ApplicationClosingDateTime", "autoWidth": true },
+                    {
+                        "data": "Document_No", "width": "50px", "render": function (data) {
+                            return '<a class="btn btn-success" href="../Home/ViewJobDetails?JobReferenceNumber=' + data + '"><i class="fa fa-eye m-r-10"></i>View</a>';
+                        }
+                    },
+                    {
+                        "data": "Document_No", "width": "50px", "render": function (data) {
+                            return '<a class="btn btn-warning" href="../Home/ViewJobDetails?JobReferenceNumber=' + data + '"><i class="fa fa-share m-r-10"></i>Apply</a>';
+                        }
+                    },
+                {
+                    "data": "Document_No", "width": "50px", "render": function (data) {
+                        return '<a class="btn btn-warning" href="#"><i class="fa fa-download"></i>Download</a>';
+                    }
+                }
+
+                ]
+            })
+            $('.tablecontainer').on('click', 'a.popup', function (e) {
+                e.preventDefault();
+                OpenPopup($(this).attr('href'));
+            })
+            function OpenPopup(pageUrl) {
+                var $pageContent = $('<div/>');
+                $pageContent.load(pageUrl, function () {
+                    $('#popupForm', $pageContent).removeData('validator');
+                    $('#popupForm', $pageContent).removeData('unobtrusiveValidation');
+                    $.validator.unobtrusive.parse('form');
+
+                });
+
+                $dialog = $('<div class="popupWindow" style="overflow:auto"></div>')
+                          .html($pageContent)
+                          .dialog({
+                              draggable : false,
+                              autoOpen : false,
+                              resizable : false,
+                              model : true,
+                              title:'Popup Dialog',
+                              height : 550,
+                              width : 600,
+                              close: function () {
+                                  $dialog.dialog('destroy').remove();
+                              }
+                          })
+
+                  $('.popupWindow').on('submit', '#popupForm', function (e) {
+                    var url = $('#popupForm')[0].action;
+                    $.ajax({
+                        type : "POST",
+                        url : url,
+                        data: $('#popupForm').serialize(),
+                        success: function (data) {
+                            if (data.status) {
+                                $dialog.dialog('close');
+                                oTable.ajax.reload();
+                            }
+                        }
+                    })
+
+                    e.preventDefault();
+                })
+                $dialog.dialog('open');
+            }
+        })
+</script>*@

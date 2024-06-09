@@ -1,0 +1,221 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/adak-small.jpg">
+    <title>Cooperative management</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" />
+    @*<link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css">*@
+    <link rel="stylesheet" type="text/css" href="~/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/line-awesome.min.css">
+    @*<link rel="stylesheet" type="text/css" href="~/assets/css/dataTables.bootstrap.min.css">*@
+    <link rel="stylesheet" type="text/css" href="~/assets/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/CustomAdminLTE.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/ladda-themeless.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/MaterialCards.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/FormWizard.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/Cards.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/Wizard.css">
+    <link rel="stylesheet" href="https://unpkg.com/materialize-stepper@3.1.0/dist/css/mstepper.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .required::after {
+            content: "*";
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left">
+                @*<a href="../Home/Dashboard" class="logo">
+                    <img src="~/assets/img/adak.jpg" width="200" height="50" alt="">
+                </a>*@
+            </div>
+            <a id="toggle_btn" href="javascript:void(0);"><i class="la la-bars"></i></a>
+            <div class="page-title-box pull-left">
+                <h3>Cooperative Management</h3>
+            </div>
+            <a id="mobile_btn" class="mobile_btn pull-left" href="#sidebar"><i class="fa fa-bars" aria-hidden="true"></i></a>
+            <ul class="nav navbar-nav navbar-right user-menu pull-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle user-link" data-toggle="dropdown" title="Admin">
+                        <span class="user-img">
+                            <img class="img-circle" src="~/assets/img/user.jpg" width="40" alt="Admin">
+                            <span class="status online"></span>
+                        </span>
+                        <span>@Session["Email"]</span>
+                        <i class="caret"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">My Profile</a></li>
+                        @*<li><a href="/Home/Myprofile">Edit Profile</a></li>*@
+                        <li><a href="#">Settings</a></li>
+                        <li><a href="../Home/Logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="dropdown mobile-user-menu pull-right">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <ul class="dropdown-menu pull-right">
+                    <li><a href="#">My Profile</a></li>
+                    <li><a href="">Edit Profile</a></li>
+                    <li><a href="">Settings</a></li>
+                    <li><a href="../Home/Logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="active">
+                            <a href="../Home/Dashboard"><i class="la la-dashboard"></i> <span>Dashboard</span></a>
+                        </li>
+                        <li class="submenu">
+
+                            <ul style="display: none;">
+                                <li><a href="../CadindateProfile/Personalinformation">Personal Information</a></li>
+                                <li><a href="../CadindateProfile/AcademicQualifications">Academic Qualifications </a></li>
+                                <li><a href="../CadindateProfile/EmploymentExperience">Work Experience</a></li>
+
+
+                                <li><a href="../CadindateProfile/CandidateAttachDocuments">Attachments </a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="la la-phone"></i> <span>My Account</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="../Home/Myprofile">My Profile</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="la la-opera"></i> <span>My Contributions</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="../Home/Contributions">Contributions </a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="la la-opera"></i> <span>Events</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="../Home/Events">Upcomming Events </a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#"><i class="la la-opera"></i> <span>Make a Contribution</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="../Home/Contribution">New Contribution </a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="../Home/Logout"><i class="la la-power-off"></i> <span>Logout</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-wrapper">
+        @RenderBody()
+        <hr />
+    </div>
+    <div class="sidebar-overlay" data-reff="#sidebar"></div>
+    <script type="text/javascript" src="~/assets/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    @*<script type="text/javascript" src="~/assets/js/dataTables.bootstrap.min.js"></script>*@
+    <script type="text/javascript" src="~/assets/js/jquery.slimscroll.js"></script>
+    <script type="text/javascript" src="~/assets/js/select2.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/form-wizard.js"></script>
+    <script type="text/javascript" src="~/assets/js/WizardForm.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/ProfileTabs.js"></script>
+    <script type="text/javascript" src="~/assets/js/form-validation.js"></script>
+    <script type="text/javascript" src="~/assets/js/jquery.steps.js"></script>
+    <script type="text/javascript" src="~/assets/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="~/assets/js/WizardForm.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/ProfileTabs.js"></script>
+    <script type="text/javascript" src="~/assets/js/form-validation.js"></script>
+    <script type="text/javascript" src="~/assets/js/jquery.steps.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/Stepper.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/mstepper.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/mstepper.min.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/ApplicantValidations.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/ApplicantCompleteProfile.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/AcademicQualifications.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/ProffessionalQualifications.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/CandidateProffessionalBodies.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/CandidateEmploymentDetails.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/CandidateReferees.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/CandidateFileUploads.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/ValidationsFunctions.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/JsAcademicQualifications.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/jquery.steps.min.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/wizard-steps.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/form-validation.js"></script>
+    <script type="text/javascript" src="~/assets/CutsomJs/JobApplicationUploads.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/materialize-stepper@3.1.0/dist/js/mstepper.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>*@
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#postCodes").change(function () {
+            $("#cityname").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SelectedPosta")',
+                dataType: 'json',
+                data: { id: $("#postCodes").val() },
+                success: function (country) {
+
+                    $.each(country, function (i, country) {
+                        $("#cityname").append('<option value="'
+                                                    + country.Value + '">'
+                                                + country.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+            return false;
+        })
+    });
+    </script>
+    <script type="text/javascript">
+        //this will add * next to required label
+        $('input[type=text],input[type=radio],input[type=checkbox],textarea,select,input[type=email],input[type=number]').each(function () {
+            var req = $(this).attr('data-val-required');
+            var exclude = $(this).attr('data-exclude');
+            if (undefined != req && undefined == exclude) {
+                var label = $('label[for="' + $(this).attr('id') + '"]');
+                var text = label.text();
+                if (text.length > 0) {
+                    label.append('<span style="color:red"> *</span>');
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,379 @@
+﻿.site-footer {
+    background-color: #01ADED;
+    padding: 45px 0 20px;
+    font-size: 15px;
+    line-height: 24px;
+    color: #fff;
+    height: 100%;
+}
+
+    .site-footer hr {
+        border-top-color: #bbb;
+        opacity: 0.5
+    }
+
+        .site-footer hr.small {
+            margin: 20px 0
+        }
+
+    .site-footer h6 {
+        color: #fff;
+        font-size: 16px;
+        text-transform: uppercase;
+        margin-top: 5px;
+        letter-spacing: 2px
+    }
+
+    .site-footer a {
+        color: #737373;
+    }
+.site-footerbackground {
+    background-color: #5cb85c;
+}
+        .site-footer a:hover {
+            color: #5cb85c;
+            text-decoration: none;
+        }
+
+.footer-links {
+    padding-left: 0;
+    list-style: none
+}
+
+    .footer-links li {
+        display: block
+    }
+
+    .footer-links a {
+        color: #eceeef
+    }
+
+        .footer-links a:active, .footer-links a:focus, .footer-links a:hover {
+            color: #eceeef;
+            text-decoration: none;
+        }
+
+    .footer-links.inline li {
+        display: inline-block
+    }
+
+.site-footer .social-icons {
+    text-align: right
+}
+
+    .site-footer .social-icons a {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        margin-left: 6px;
+        margin-right: 0;
+        border-radius: 100%;
+        background-color: #33353d
+    }
+
+.copyright-text {
+    margin: 0
+}
+
+@media (max-width:991px) {
+    .site-footer [class^=col-] {
+        margin-bottom: 30px
+    }
+}
+
+@media (max-width:567px) {
+    .site-footer {
+        padding-bottom: 0;
+    }
+
+        .site-footer .copyright-text, .site-footer .social-icons {
+            text-align: center
+        }
+}
+
+.social-icons {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none
+}
+
+    .social-icons li {
+        display: inline-block;
+        margin-bottom: 4px
+    }
+
+        .social-icons li.title {
+            margin-right: 15px;
+            text-transform: uppercase;
+            color: #96a2b2;
+            font-weight: 700;
+            font-size: 13px
+        }
+
+    .social-icons a {
+        background-color: #eceeef;
+        color: #818a91;
+        font-size: 16px;
+        display: inline-block;
+        line-height: 44px;
+        width: 44px;
+        height: 44px;
+        text-align: center;
+        margin-right: 8px;
+        border-radius: 100%;
+        -webkit-transition: all .2s linear;
+        -o-transition: all .2s linear;
+        transition: all .2s linear
+    }
+
+        .social-icons a:active, .social-icons a:focus, .social-icons a:hover {
+            color: #fff;
+            background-color: #29aafe
+        }
+
+    .social-icons.size-sm a {
+        line-height: 34px;
+        height: 34px;
+        width: 34px;
+        font-size: 14px
+    }
+
+    .social-icons a.facebook:hover {
+        background-color: #3b5998
+    }
+
+    .social-icons a.twitter:hover {
+        background-color: #00aced
+    }
+
+    .social-icons a.linkedin:hover {
+        background-color: #007bb6
+    }
+
+    .social-icons a.dribbble:hover {
+        background-color: #ea4c89
+    }
+
+@media (max-width:767px) {
+    .social-icons li.title {
+        display: block;
+        margin-right: 0;
+        font-weight: 600
+    }
+}
+
+.stepwizard-step p {
+    margin-top: 0px;
+    color: #666;
+}
+
+.stepwizard-row {
+    display: table-row;
+}
+
+.stepwizard {
+    display: table;
+    width: 120%;
+    position: relative;
+}
+
+.stepwizard-step button[disabled] {
+    /*opacity: 1 !important;
+    filter: alpha(opacity=100) !important;*/
+}
+
+.stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {
+    opacity: 1 !important;
+    color: #bbb;
+}
+
+.stepwizard-row:before {
+    top: 14px;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 100%;
+    height: 2px;
+    background-color: #ccc;
+    z-index: 0;
+}
+
+.stepwizard-step {
+    display: table-cell;
+    text-align: center;
+    position: relative;
+}
+
+.btn-circle {
+    width: 60px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+}
+
+.pass_show {
+    position: relative
+}
+
+    .pass_show .ptxt {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        z-index: 1;
+        color: #f36c01;
+        margin-top: -10px;
+        cursor: pointer;
+        transition: .3s ease all;
+    }
+
+        .pass_show .ptxt:hover {
+            color: #333333;
+        }
+
+li.active > a.hidden-xs {
+    display: block !important;
+}
+
+li.active > a.visible-xs {
+    display: none !important;
+}
+
+.nav-pills.nav-wizard > li {
+    position: relative;
+    overflow: visible;
+    border-right: 10px solid #fff;
+    border-left: 10px solid #fff;
+}
+
+    .nav-pills.nav-wizard > li:first-child {
+        border-left: 0;
+    }
+
+        .nav-pills.nav-wizard > li:first-child a {
+            border-radius: 5px 0 0 5px;
+        }
+
+    .nav-pills.nav-wizard > li:last-child {
+        border-right: 0;
+    }
+
+        .nav-pills.nav-wizard > li:last-child a {
+            border-radius: 0 5px 5px 0;
+        }
+
+    .nav-pills.nav-wizard > li a {
+        border-radius: 0;
+        background-color: #eee;
+        padding: 10px;
+    }
+
+    .nav-pills.nav-wizard > li .nav-arrow {
+        position: absolute;
+        top: 0px;
+        right: -20px;
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 20px 0 20px 20px;
+        border-color: transparent transparent transparent #eee;
+        z-index: 150;
+    }
+
+    .nav-pills.nav-wizard > li .nav-wedge {
+        position: absolute;
+        top: 0px;
+        left: -20px;
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 20px 0 20px 20px;
+        border-color: #eee #eee #eee transparent;
+        z-index: 150;
+    }
+
+    .nav-pills.nav-wizard > li:hover .nav-arrow {
+        border-color: transparent transparent transparent #aaa;
+    }
+
+    .nav-pills.nav-wizard > li:hover .nav-wedge {
+        border-color: #aaa #aaa #aaa transparent;
+    }
+
+    .nav-pills.nav-wizard > li:hover a {
+        background-color: #aaa;
+        color: #fff;
+    }
+
+    .nav-pills.nav-wizard > li.active .nav-arrow {
+        border-color: transparent transparent transparent #428bca;
+    }
+
+    .nav-pills.nav-wizard > li.active .nav-wedge {
+        border-color: #428bca #428bca #428bca transparent;
+    }
+
+    .nav-pills.nav-wizard > li.active a {
+        background-color: #428bca;
+    }
+/* CSS for Credit Card Payment form */
+.credit-card-box .panel-title {
+    display: inline;
+    font-weight: bold;
+}
+
+.credit-card-box .form-control.error {
+    border-color: red;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(255,0,0,0.6);
+}
+
+.credit-card-box label.error {
+    font-weight: bold;
+    color: red;
+    padding: 2px 8px;
+    margin-top: 2px;
+}
+
+.credit-card-box .payment-errors {
+    font-weight: bold;
+    color: red;
+    padding: 2px 8px;
+    margin-top: 2px;
+}
+
+.credit-card-box label {
+    display: block;
+}
+
+.credit-card-box .display-tr {
+    display: table-row;
+}
+
+.credit-card-box .display-td {
+    display: table-cell;
+    vertical-align: middle;
+    width: 50%;
+}
+/* Just looks nicer */
+.credit-card-box .panel-heading img {
+    min-width: 180px;
+}
+
+.bar-success {
+    background-color: #5cb85c;
+}
+
+.bar-info {
+    background-color: #5bc0de;
+}
+
+.bar-warning {
+    background-color: #f0ad4e;
+}
+
+.bar-danger {
+    background-color: #d9534f;
+}

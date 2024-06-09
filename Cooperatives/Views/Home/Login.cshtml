@@ -1,0 +1,139 @@
+﻿
+@model Cooperatives.Models.LoginModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/img/adak-small.jpg">
+    <title>Cooperative  Management</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/material-dashboard-new.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/ladda-themeless.min.css">
+    <style type="text/css">
+        #toggle_pwd {
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="account-page">
+           
+            <div class="card">
+            
+                <div class="card-content">
+
+                    <div class="container">
+                        <center><h2>Login Form<i><p class="page-title"></p></i></h2></center>
+                        <div class="account-box" style="width:650px;">
+                            <div class="account-wrapper">
+
+                                @if (TempData["error"] != null)
+                                {
+
+                                    <div class="alert alert-danger" id="alert-danger" role="alert">
+                                        @TempData["error"]
+                                    </div>
+
+                                }
+                                @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Email, new { htmlAttributes = new { @class = "control-label col-md-2" } })
+                                        <div class="form-group form-focus  has-success has-feedback">
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control floating", @required = "required", placeholder = " " } })
+                                            <span class="glyphicon glyphicon-envelope form-control-feedback" aria-hidden="true"></span>
+                                        </div>
+                                        <div>
+                                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "error" })
+                                        </div>
+                                        <br />
+
+                                        @Html.LabelFor(model => model.Password, new { htmlAttributes = new { @class = "control-label col-md-2" } })
+                                        <div class="form-group form-focus  has-success has-feedback">
+                                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control floating", @required = "required", id = "txtPassword", type = "password", placeholder = " " } })
+                                            <span id="toggle_pwd" class="fa fa-fw fa-eye field_icon"></span>
+
+                                        </div>
+                                        <div>
+                                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "error" })
+                                        </div>
+                                    </div>
+                                    <center>
+                                        <div class="form-group text-center">
+                                            <div id="loader" style="display:none" class="modal">
+                                                <img src="~/assets/img/loader.gif" />
+                                            </div>
+                                            <input type="hidden" name="ReturnUrl" value="@Request.QueryString["ReturnUrl"]" />
+                                            <input type="submit" value="Login" class="btn btn-primary btn-block account-btn ladda-button" data-style="slide-right" />
+                                        </div>
+                                    </center>
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10" style="color:green">
+                                            @ViewBag.Message
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="text-center">
+                                                @Html.ActionLink("Don't have an account yet?", "Register", "Home")
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text-center">
+                                                @Html.ActionLink("Forgot your password?", "ResetPassword")
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar-overlay" data-reff="#sidebar"></div>
+    <script type="text/javascript" src="~/assets/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/app.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('form').submit(function () {
+                if (!someValidations()) {
+                    return false;
+                } else {
+                    $('form #loader').show();
+                }
+                return true;
+            });
+
+            function someValidations() {
+                return true;
+            }
+
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $("#toggle_pwd").click(function () {
+                $(this).toggleClass("fa-eye fa-eye-slash");
+               var type = $(this).hasClass("fa-eye-slash") ? "text" : "password";
+                $("#txtPassword").attr("type", type);
+            });
+        });
+    </script>
+</body>
+</html>
