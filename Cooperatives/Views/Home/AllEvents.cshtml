@@ -1,0 +1,38 @@
+﻿@model List<Cooperatives.Models.EventModel>
+
+@{
+    ViewBag.Title = "All Events";
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>All Events</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Event Name</th>
+            <th>Description</th>
+            <th>Event Date</th>
+
+            <th>Action</th> <!-- Edit column -->
+            <th>Action</th> <!-- Delete column -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ev in Model)
+        {
+            <tr>
+                <td>@ev.EventName</td>
+                <td>@ev.Description</td>
+                <td>@ev.EventDate.ToShortDateString()</td>
+                <td>
+                    <a href="@Url.Action("EditEvent", "Home", new { eventId = ev.EventId })">Edit</a>
+                </td>
+                <td>
+                    <a href="@Url.Action("DeleteEvent", "Home", new { eventId = ev.EventId })">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -135,6 +135,10 @@
     <Compile Include="Migrations\202406090642319_InitialCreate.designer.cs">
       <DependentUpon>202406090642319_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202406091146193_Roles.cs" />
+    <Compile Include="Migrations\202406091146193_Roles.designer.cs">
+      <DependentUpon>202406091146193_Roles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Contribution.cs" />
     <Compile Include="Models\AppDbContext.cs" />
@@ -183,9 +187,14 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Home\Logout.cshtml" />
-    <Content Include="Views\Home\Contributions.cshtml" />
+    <Content Include="Views\Home\MyContributions.cshtml" />
     <Content Include="Views\Home\Events.cshtml" />
     <Content Include="Views\Home\Contribution.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Home\AdminDashboard.cshtml" />
+    <Content Include="Views\Home\NewEvent.cshtml" />
+    <Content Include="Views\Home\AllEvents.cshtml" />
+    <Content Include="Views\Home\AllContributions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -206,6 +215,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202406090642319_InitialCreate.resx">
       <DependentUpon>202406090642319_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202406091146193_Roles.resx">
+      <DependentUpon>202406091146193_Roles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,0 +1,15 @@
+﻿@using Cooperatives.Models
+@model dynamic
+@{
+    ViewBag.Title = "AdminDashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    string profileComplete = Convert.ToString(Session["Email"]);
+
+}
+
+<h2>AdminDashboard</h2>
+<div>
+    <strong>Welcome @Session["FirstName"]</strong>@TempData["success"];
+</div>
+
