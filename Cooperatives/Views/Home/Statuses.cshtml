@@ -1,0 +1,28 @@
+﻿@model List<Cooperatives.Models.StatusModel>
+
+@{
+    ViewBag.Title = "Statuses";
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>All Status</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Amount</th>              
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ev in Model)
+        {
+            <tr>
+                <td>@ev.StatusId</td>
+                <td>@ev.StatusName</td>            
+
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Dashboard";
+    ViewBag.Title = "User Page";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -42,8 +42,8 @@
         <div class="header">
             <div class="header-left">
                 @*<a href="../Home/Dashboard" class="logo">
-                    <img src="~/assets/img/adak.jpg" width="200" height="50" alt="">
-                </a>*@
+                        <img src="~/assets/img/adak.jpg" width="200" height="50" alt="">
+                    </a>*@
             </div>
             <a id="toggle_btn" href="javascript:void(0);"><i class="la la-bars"></i></a>
             <div class="page-title-box pull-left">
@@ -62,7 +62,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">My Profile</a></li>
-                        @*<li><a href="/Home/Myprofile">Edit Profile</a></li>*@
+                        <li><a href="/Home/Myprofile">Edit Profile</a></li>
                         <li><a href="#">Settings</a></li>
                         <li><a href="../Home/Logout">Logout</a></li>
                     </ul>
@@ -86,43 +86,32 @@
                             <a href="../Home/Dashboard"><i class="la la-dashboard"></i> <span>Dashboard</span></a>
                         </li>
                         <li class="submenu">
-
-                            <ul style="display: none;">
-                                <li><a href="../CadindateProfile/Personalinformation">Personal Information</a></li>
-                                <li><a href="../CadindateProfile/AcademicQualifications">Academic Qualifications </a></li>
-                                <li><a href="../CadindateProfile/EmploymentExperience">Work Experience</a></li>
-
-
-                                <li><a href="../CadindateProfile/CandidateAttachDocuments">Attachments </a></li>
-                            </ul>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="la la-phone"></i> <span>My Account</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
-                                <li><a href="../Home/Myprofile">My Profile</a></li>
+                                <li><a href="../Home/NewProfile">My Profile</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><i class="la la-opera"></i> <span>My Contributions</span> <span class="menu-arrow"></span></a>
+                            <a href="#"><i class="la la-opera"></i> <span>Contributions</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
-                                <li><a href="../Home/Contributions">Contributions </a></li>
+                                <li><a href="../Home/MyContributions">All Contributions</a></li>
+                                <li><a href="../Home/Contribution"> Make a Contributions</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
                             <a href="#"><i class="la la-opera"></i> <span>Events</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
-                                <li><a href="../Home/Events">Upcomming Events </a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="la la-opera"></i> <span>Make a Contribution</span> <span class="menu-arrow"></span></a>
-                            <ul style="display: none;">
-                                <li><a href="../Home/Contribution">New Contribution </a></li>
+                                <li><a href="../Home/UpcomingEvents">Upcoming Events</a></li>
+                                <li><a href="../Home/Events">All Events</a></li>
+
                             </ul>
                         </li>
                         <li>
                             <a href="../Home/Logout"><i class="la la-power-off"></i> <span>Logout</span></a>
                         </li>
+
                     </ul>
                 </div>
             </div>
@@ -216,6 +205,6 @@
             }
         });
     </script>
-
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

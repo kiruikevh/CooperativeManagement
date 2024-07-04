@@ -10,8 +10,10 @@ namespace Cooperatives.Models
     {
         [Key]
         public int ContributionId { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
+        [Required]
         public decimal Amount { get; set; }
+        [Required]
         public DateTime Date { get; set; }
     }
 }
