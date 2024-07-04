@@ -1,40 +1,7 @@
-﻿@model List<Cooperatives.Models.EventModel>
-
+﻿
 @{
     ViewBag.Title = "Events";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <h2 class="text-center">All Contributions</h2>
-            <hr />
+<h2>Upcomming Events</h2>
 
-            <table class="table table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Id</th>
-                        <th>Event Name</th>
-                        <th>Event Date</th>
-                        <th colspan="2" class="text-center">Actions</th> <!-- Combine columns for actions -->
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var ev in Model)
-                    {
-                        <tr>
-                            <td>@ev.EventId</td>
-                            <td>@ev.EventName</td>
-                            <td>@ev.EventDate.ToShortDateString()</td>
-                            <td class="text-center">
-                                <a href="@Url.Action("EditEvent", "Home", new { eventId = ev.EventId })" class="btn btn-primary">Add Reminder</a>
-                            </td>
-                            
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
