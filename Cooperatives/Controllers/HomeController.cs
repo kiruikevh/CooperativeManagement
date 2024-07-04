@@ -1,13 +1,17 @@
 ﻿using Cooperatives.Models;
+using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Cooperatives.Controllers
 {
     public class HomeController : Controller
     {
         private AppDbContext db = new AppDbContext();
-
+        private readonly string _clientId;
+        private readonly string _clientSecret;
         private bool IsAuthenticated()
         {
             return Session["UserId"] != null;
@@ -15,7 +19,7 @@ namespace Cooperatives.Controllers
 
         private bool IsAdmin()
         {
-            return Session["Role"] != null && Session["Role"].ToString() == "Admin";
+            return Session["Role"] != null && Session["Role"].ToString() == "Admin" && IsAuthenticated();
         }
 
         private ActionResult RedirectToLogin()
@@ -35,7 +39,7 @@ namespace Cooperatives.Controllers
 
         private ActionResult AuthorizeAdmin()
         {
-            if (!IsAuthenticated() || !IsAdmin())
+            if (!IsAdmin() && !IsAuthenticated())
             {
                 return RedirectToLogin();
             }
@@ -72,14 +76,10 @@ namespace Cooperatives.Controllers
             return View();
         }
 
+
         // GET: Account/Register
         public ActionResult Register()
         {
-            // Check if the user is already authenticated
-            if (IsAuthenticated())
-            {
-                return RedirectToAction("Index");
-            }
             return View();
         }
 
@@ -108,23 +108,15 @@ namespace Cooperatives.Controllers
         // GET: Home/Login
         public ActionResult Login()
         {
-            // Check if the user is already authenticated
-            if (IsAuthenticated())
-            {
-                return RedirectToAction("Index");
-            }
+          
+          
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model)
-        {
-            if (IsAuthenticated())
-            {
-                return RedirectToAction("Index");
-            }
-
+        {          
             if (ModelState.IsValid)
             {
                 var user = db.Users.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
@@ -149,33 +141,44 @@ namespace Cooperatives.Controllers
             }
             return View(model);
         }
-
         public ActionResult Logout()
         {
-            // Clear session
-            Session.Clear();
-            return RedirectToAction("Login");
+            Session.Abandon();
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login", "Home");
         }
 
+       [HttpGet]
         public ActionResult Dashboard()
-        {
-            if (IsAuthenticated())
-            {
-                return RedirectToAction("Index");
-            }
-            return RedirectToAction("Login");
-        }
-
-        public ActionResult Contribution()
         {
             var result = Authorize();
             if (result != null)
             {
                 return result;
             }
-            return View();
+            var data = db.Profiles.ToList();
+            return View(data);
         }
 
+        public ActionResult MyContributions()
+        {
+            var result = Authorize();
+            if (result != null)
+            {
+                return result;
+            }
+            // Retrieve all events from the database
+            var contributions = db.Contributions.ToList();
+
+            // Pass the list of events to the view
+            return View(contributions);
+          
+        }
+
+        public ActionResult Contribution()
+        {
+            return View();
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Contribution(ContributionModel contributionModel)
@@ -188,9 +191,15 @@ namespace Cooperatives.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Contributions.Add(contributionModel);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var userId = Convert.ToString(Session["UserId"]);
+                if (userId != null)
+                {
+                    contributionModel.UserId = userId;
+                    db.Contributions.Add(contributionModel);
+                    db.SaveChanges();
+                }
+
+                return RedirectToAction("Dashboard");
             }
 
             return View(contributionModel);
@@ -221,6 +230,16 @@ namespace Cooperatives.Controllers
             // Pass the list of events to the view
             return View(events);
         }
+        public ActionResult Events()
+        {
+            var result = Authorize();
+            if (result != null)
+            {
+                return result;
+            }
+            var events = db.Events.ToList();
+            return View(events);
+        }
         public ActionResult AllContributions()
         {
             var result = AuthorizeAdmin();
@@ -234,6 +253,15 @@ namespace Cooperatives.Controllers
 
             // Pass the list of events to the view
             return View(contributions);
+        }
+        public ActionResult NewEvent()
+        {
+            var result = AuthorizeAdmin();
+            if (result != null)
+            {
+                return result;
+            }
+            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -253,12 +281,129 @@ namespace Cooperatives.Controllers
 
                 // Redirect to a confirmation page or other appropriate action
                 TempData["Message"] = "Event saved successfully";
-                return RedirectToAction("AdminDashboard");
+                return RedirectToAction("AllEvents");
             }
 
             // If ModelState is not valid, return the view with errors
             return View(eventModel);
         }
+        //public ActionResult Statuses()
+        //{
+        //    var result = AuthorizeAdmin();
+        //    if (result != null)
+        //    {
+        //        return result;
+        //    }
+        //    // Retrieve all events from the database
+        //    var data = db.Statuses.ToList();
 
+        //    // Pass the list of events to the view
+        //    return View(data);
+        //}
+        //public ActionResult Status()
+        //{
+        //    var result = AuthorizeAdmin();
+        //    if (result != null)
+        //    {
+        //        return result;
+        //    }
+        //    return View();
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Status(StatusModel statusModel)
+        //{
+        //    var result = AuthorizeAdmin();
+        //    if (result != null)
+        //    {
+        //        return result;
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        // Add the event to the database
+        //        db.Statuses.Add(statusModel);
+        //        db.SaveChanges();
+        //        // Redirect to a confirmation page or other appropriate action
+        //        TempData["Message"] = "Status saved successfully";
+        //        return RedirectToAction("Statuses");
+        //    }
+
+        //    // If ModelState is not valid, return the view with errors
+        //    return View(statusModel);
+        //}
+        public ActionResult NewProfile()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewProfile(ProfileModel profile)
+        {
+            var result = Authorize();
+            var userId = Convert.ToString(Session["UserId"]);
+            if (userId != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    profile.UserId = userId;
+                    db.Profiles.Add(profile);
+                    db.SaveChanges();
+                    Response.Redirect("Dashboard");
+                }
+            }
+            else
+            {
+                // Handle the case where UserId is null (e.g., user not logged in)
+                ModelState.AddModelError("", "User is not logged in.");
+            }
+            return View (profile);
+        }
+        // GET: Profile/EditProfile
+        public ActionResult EditProfile(int? id)
+        {
+            var profile = db.Profiles.Find(id);
+            if (profile == null)
+            {
+                return HttpNotFound();
+            }
+            return View(profile);
+        }
+
+        // POST: Profile/EditProfile/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProfile(ProfileModel profile)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(profile).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Dashboard");
+            }
+            return View(profile);
+        }
+        // GET: Profile/DeleteProfile/5
+        public ActionResult DeleteProfile(int? id)
+        {
+            var profile = db.Profiles.Find(id);
+            if (profile == null)
+            {
+                return HttpNotFound();
+            }
+            return View(profile);
+        }
+
+        // POST: Profile/DeleteProfile/5
+        [HttpPost, ActionName("DeleteProfile")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteProfileConfirmed(int? id)
+        {
+            var profile = db.Profiles.Find(id);
+            db.Profiles.Remove(profile);
+            db.SaveChanges();
+            return RedirectToAction("Dashboard");
+        }
+     
     }
 }
