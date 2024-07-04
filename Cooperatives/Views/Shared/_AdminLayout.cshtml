@@ -106,7 +106,7 @@
                             <a href="#"><i class="la la-opera"></i> <span>Contributions</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li><a href="../Home/AllContributions">All Contributions</a></li>
-
+                                
                             </ul>
                         </li>
                         <li class="submenu">
@@ -114,14 +114,6 @@
                             <ul style="display: none;">
                                 <li><a href="../Home/AllEvents">All Events</a></li>
                                 <li><a href="../Home/NewEvent">New Event</a></li>
-                                <li><a href="../Home/PendingEvent">Pending Events</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="la la-opera"></i> <span>System Codes</span> <span class="menu-arrow"></span></a>
-                            <ul style="display: none;">
-                                <li><a href="../Home/Status">Add Status</a></li>
-                                <li><a href="../Home/Statuses">All Statuses</a></li>                             
                             </ul>
                         </li>
                         <li class="submenu">
@@ -189,6 +181,32 @@
     <script type="text/javascript" src="https://unpkg.com/materialize-stepper@3.1.0/dist/js/mstepper.min.js"></script>
     @*<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>*@
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#postCodes").change(function () {
+            $("#cityname").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SelectedPosta")',
+                dataType: 'json',
+                data: { id: $("#postCodes").val() },
+                success: function (country) {
+
+                    $.each(country, function (i, country) {
+                        $("#cityname").append('<option value="'
+                                                    + country.Value + '">'
+                                                + country.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+            return false;
+        })
+    });
+    </script>
     <script type="text/javascript">
         //this will add * next to required label
         $('input[type=text],input[type=radio],input[type=checkbox],textarea,select,input[type=email],input[type=number]').each(function () {
