@@ -1,36 +1,7 @@
-﻿@model List<Cooperatives.Models.ContributionModel>
-
+﻿
 @{
-    ViewBag.Title = "My Contributions";
-
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Contributions";
 }
 
-<h2>All Contributions</h2>
+<h2>Contributions</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Amount</th>
-            <th>Date</th>
-            @*<th>Action</th> <!-- Edit column -->
-            <th>Action</th> <!-- Delete column -->*@
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var ev in Model)
-        {
-            <tr>
-                <td>@ev.Amount</td>
-                
-                <td>@ev.Date.ToShortDateString()</td>
-                @*<td>
-                    <a href="@Url.Action("EditEvent", "Home", new { contributionId = ev.ContributionId })">Edit</a>
-                </td>
-                <td>
-                    <a href="@Url.Action("DeleteEvent", "Home", new {contributionId = ev.ContributionId })">Delete</a>
-                </td>*@
-            </tr>
-        }
-    </tbody>
-</table>
