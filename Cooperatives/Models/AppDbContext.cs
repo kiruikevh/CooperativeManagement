@@ -11,6 +11,8 @@ namespace Cooperatives.Models
         public DbSet<RegisterModel> Users { get; set; }
         public DbSet<EventModel> Events { get; set; }
         public DbSet<ContributionModel> Contributions { get; set; }
+        //public DbSet<StatusModel> Statuses { get; set; }
+        public DbSet<ProfileModel> Profiles { get; set; }
         public class AppDbInitializer : CreateDatabaseIfNotExists<AppDbContext>
         {
             protected override void Seed(AppDbContext context)
