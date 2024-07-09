@@ -1,4 +1,5 @@
 ﻿using Cooperatives.Models;
+using PayPal.Models;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -404,6 +405,93 @@ namespace Cooperatives.Controllers
             db.SaveChanges();
             return RedirectToAction("Dashboard");
         }
-     
+        
+        // GET: Profile/DeleteProfile/5
+        public ActionResult DeleteEvent(int? id)
+        {
+            var ev = db.Events.Find(id);
+            if (ev == null)
+            {
+                return HttpNotFound();
+            }
+            return View(ev);
+        }
+
+        // POST: Profile/DeleteProfile/5
+        [HttpPost, ActionName("DeleteEvent")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteEventConfirmed(int? id)
+        {
+            var ev = db.Events.Find(id);
+            db.Events.Remove(ev);
+            db.SaveChanges();
+            return RedirectToAction("AllEvents");
+        }
+        public ActionResult EditEvent(int? id)
+        {
+            var ev = db.Events.Find(id);
+            if (ev == null)
+            {
+                return HttpNotFound();
+            }
+            return View(ev);
+        }
+
+        // POST: Profile/EditProfile/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditEvent(EventModel ev)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(ev).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("AllEvents");
+            }
+            return View(ev);
+        }
+        public ActionResult Status()
+        {
+
+            var result = AuthorizeAdmin();
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Status(StatusModel status)
+        {
+            var result = AuthorizeAdmin();
+           // var userId = Convert.ToString(Session["UserId"]);
+         
+            
+                if (ModelState.IsValid)
+                {
+                    //status.UserId = userId;
+                    db.Statuses.Add(status);
+                    db.SaveChanges();
+                    Response.Redirect("AdminDashboard");
+                }
+
+            else
+            {
+                // Handle the case where UserId is null (e.g., user not logged in)
+                ModelState.AddModelError("", "User is not logged in.");
+            }
+            return View(status);
+        }
+        public ActionResult Statuses()
+        {
+            var result = AuthorizeAdmin();
+            if (result != null)
+            {
+                return result;
+            }
+            // Retrieve all events from the database
+            var status = db.Statuses.ToList();
+
+            // Pass the list of events to the view
+            return View(status);
+        }
+
     }
 }

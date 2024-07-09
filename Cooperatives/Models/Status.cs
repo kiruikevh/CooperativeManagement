@@ -12,5 +12,6 @@ namespace Cooperatives.Models
         public int StatusId { get; set; }
         [Required]
         public string StatusName { get; set; }
+        
     }
 }

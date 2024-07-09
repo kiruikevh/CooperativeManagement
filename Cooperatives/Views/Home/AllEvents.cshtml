@@ -6,32 +6,36 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>All Events</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Event Name</th>
-            <th>Description</th>
-            <th>Event Date</th>
-            <th>Action</th> <!-- Edit column -->
-            <th>Action</th> <!-- Delete column -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var ev in Model)
-        {
-            <tr>
-                <td>@ev.EventName</td>
-                <td>@ev.Description</td>
-                <td>@ev.EventDate.ToShortDateString()</td>
-                <td>
-                    <a href="@Url.Action("EditEvent", "Home", new { eventId = ev.EventId })">Edit</a>
-                </td>
-                <td>
-                    <a href="@Url.Action("DeleteEvent", "Home", new { eventId = ev.EventId })">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<h2 class="text-center my-4">All Events</h2>
+<div class="content ">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Description</th>
+                            <th>Event Date</th>
+                            <th>Action</th> <!-- Edit column -->                    
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ev in Model)
+                        {
+                            <tr>
+                                <td>@ev.EventName</td>
+                                <td>@ev.Description</td>
+                                <td>@ev.EventDate.ToShortDateString()</td>
+                                <td>
+                                    <a href="@Url.Action("EditEvent", "Home", new { id = ev.EventId })" class="btn btn-primary">Edit</a>
+                                    <a href="@Url.Action("DeleteEvent", "Home", new { id = ev.EventId })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Event?');">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            </div>
+</div>
+</div>

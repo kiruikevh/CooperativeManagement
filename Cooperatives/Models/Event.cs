@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cooperatives.Migrations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,12 +16,10 @@ namespace Cooperatives.Models
         public string EventName { get; set; }
         [Required]
         public string Description { get; set; }
-        
         [Required]
         public DateTime EventDate { get; set; }
-        //[Required]
         //[ForeignKey("Status")]
         //public int StatusId { get; set; }
-        //public virtual StatusModel Status { get; set; }
+        //public StatusModel Status { get; set; }
     }
 }

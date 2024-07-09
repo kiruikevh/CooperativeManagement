@@ -1,0 +1,45 @@
+﻿@model Cooperatives.Models.EventModel
+
+@{
+    ViewBag.Title = "Delete Event";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h3 class="text-center">Are you sure you want to delete this event ?</h3>
+            <hr />
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.EventId)</th>
+                        <td>@Html.DisplayFor(model => model.EventId)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.EventName)</th>
+                        <td>@Html.DisplayFor(model => model.EventName)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Description)</th>
+                        <td>@Html.DisplayFor(model => model.Description)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.EventDate)</th>
+                        <td>@Html.DisplayFor(model => model.EventDate)</td>
+                    </tr>
+               
+                </tbody>
+            </table>
+            <div class="text-center">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <input type="submit" value="Delete" class="btn btn-danger" /> |
+                        @Html.ActionLink("Back", "AdminDashboard", null, new { @class = "btn btn-default" })
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

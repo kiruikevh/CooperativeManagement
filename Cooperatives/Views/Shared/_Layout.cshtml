@@ -1,7 +1,8 @@
-﻿
+﻿﻿@*@model PayPal.Models.PayPalViewData*@
 @{
     ViewBag.Title = "User Page";
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,7 +63,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">My Profile</a></li>
-                        <li><a href="/Home/Myprofile">Edit Profile</a></li>
+                        @*<li><a href="/Home/Myprofile">Edit Profile</a></li>*@
                         <li><a href="#">Settings</a></li>
                         <li><a href="../Home/Logout">Logout</a></li>
                     </ul>
@@ -206,5 +207,23 @@
         });
     </script>
     @RenderSection("Scripts", required: false)
+
+    @*@if (Model.ErrorMessage != null)
+    {
+        <h3>Error message</h3>
+        <p>@Model.ErrorMessage</p>
+    }
+
+    @if (Model.JsonRequest != null)
+    {
+        <h3>JSON Request</h3>
+        <pre>@Model.JsonRequest</pre>
+    }
+
+    @if (Model.JsonResponse != null)
+    {
+        <h3>JSON Response</h3>
+        <pre>@Model.JsonResponse</pre>
+    }*@
 </body>
 </html>

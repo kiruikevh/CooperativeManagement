@@ -131,6 +131,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PaypalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -170,14 +171,25 @@
     <Compile Include="Migrations\202407041057301_gjk.designer.cs">
       <DependentUpon>202407041057301_gjk.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202407090831244_ii1.cs" />
+    <Compile Include="Migrations\202407090831244_ii1.designer.cs">
+      <DependentUpon>202407090831244_ii1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202407090832563_mn.cs" />
+    <Compile Include="Migrations\202407090832563_mn.designer.cs">
+      <DependentUpon>202407090832563_mn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ConfirmedViewData.cs" />
     <Compile Include="Models\Contribution.cs" />
     <Compile Include="Models\AppDbContext.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\PaypalViewData.cs" />
     <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -233,6 +245,11 @@
     <Content Include="Views\Home\NewProfile.cshtml" />
     <Content Include="Views\Home\EditProfile.cshtml" />
     <Content Include="Views\Home\DeleteProfile.cshtml" />
+    <Content Include="Views\Paypal\Confirmed.cshtml" />
+    <Content Include="Views\Paypal\Success.cshtml" />
+    <Content Include="Views\Paypal\Void.cshtml" />
+    <Content Include="Views\Home\DeleteEvent.cshtml" />
+    <Content Include="Views\Home\EditEvent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -277,6 +294,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202407041057301_gjk.resx">
       <DependentUpon>202407041057301_gjk.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202407090831244_ii1.resx">
+      <DependentUpon>202407090831244_ii1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202407090832563_mn.resx">
+      <DependentUpon>202407090832563_mn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

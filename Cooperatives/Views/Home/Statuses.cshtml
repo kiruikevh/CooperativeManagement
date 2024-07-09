@@ -6,23 +6,31 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>All Status</h2>
+<h2 class="text-center my-4">Statuses</h2>
+<div class="content ">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Amount</th>              
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var ev in Model)
-        {
-            <tr>
-                <td>@ev.StatusId</td>
-                <td>@ev.StatusName</td>            
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ev in Model)
+                        {
+                            <tr>
+                                <td>@ev.StatusId</td>
+                                <td>@ev.StatusName</td>
 
-            </tr>
-        }
-    </tbody>
-</table>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using PayPal.Models;
+using System.Data.Entity;
 
 namespace Cooperatives.Models
 {
@@ -11,8 +12,10 @@ namespace Cooperatives.Models
         public DbSet<RegisterModel> Users { get; set; }
         public DbSet<EventModel> Events { get; set; }
         public DbSet<ContributionModel> Contributions { get; set; }
-        //public DbSet<StatusModel> Statuses { get; set; }
+        ////public DbSet<ConfirmedViewData> ConfirmedViews { get; set; }
+        ////public DbSet<PayPalViewData> payPalViews { get; set; }
         public DbSet<ProfileModel> Profiles { get; set; }
+        public DbSet<StatusModel> Statuses { get; set; }
         public class AppDbInitializer : CreateDatabaseIfNotExists<AppDbContext>
         {
             protected override void Seed(AppDbContext context)
