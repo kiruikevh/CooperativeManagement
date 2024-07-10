@@ -17,21 +17,32 @@
                             <th>Event Name</th>
                             <th>Description</th>
                             <th>Event Date</th>
-                            <th>Action</th> <!-- Edit column -->                    
+                            <th>Status</th>
+                            <th>Action</th> <!-- Edit column -->
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var ev in Model)
                         {
-                            <tr>
-                                <td>@ev.EventName</td>
-                                <td>@ev.Description</td>
-                                <td>@ev.EventDate.ToShortDateString()</td>
-                                <td>
-                                    <a href="@Url.Action("EditEvent", "Home", new { id = ev.EventId })" class="btn btn-primary">Edit</a>
-                                    <a href="@Url.Action("DeleteEvent", "Home", new { id = ev.EventId })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Event?');">Delete</a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@ev.EventName</td>
+                            <td>@ev.Description</td>
+                            <td>@ev.EventDate.ToShortDateString()</td>
+                            <td>
+                                @if (ev.Status != null)
+                                {
+                                    @ev.Status.StatusId
+                                }
+                                else
+                                {
+                                    <span class="text-danger">Status Not Set</span>
+                                }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("EditEvent", "Home", new { id = ev.EventId })" class="btn btn-primary">Edit</a>
+                                <a href="@Url.Action("DeleteEvent", "Home", new { id = ev.EventId })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Event?');">Delete</a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>

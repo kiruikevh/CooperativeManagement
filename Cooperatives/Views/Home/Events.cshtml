@@ -28,7 +28,7 @@
                             <td>@ev.EventName</td>
                             <td>@ev.EventDate.ToShortDateString()</td>
                             <td class="text-center">
-                                <a href="@Url.Action("EditEvent", "Home", new { eventId = ev.EventId })" class="btn btn-primary">Add Reminder</a>
+                                <a href="@Url.Action("SendEventReminders", "Home", new { eventId = ev.EventId })" class="btn btn-primary">Add Reminder</a>
                             </td>
                             
                         </tr>

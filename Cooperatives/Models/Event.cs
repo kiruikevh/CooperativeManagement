@@ -18,8 +18,8 @@ namespace Cooperatives.Models
         public string Description { get; set; }
         [Required]
         public DateTime EventDate { get; set; }
-        //[ForeignKey("Status")]
-        //public int StatusId { get; set; }
-        //public StatusModel Status { get; set; }
+      
+        public string StatusId { get; set; }
+        public virtual StatusModel Status { get; set; }
     }
 }

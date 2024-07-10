@@ -7,13 +7,13 @@ namespace Cooperatives.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class mn : IMigrationMetadata
+    public sealed partial class jk : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(mn));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(jk));
         
         string IMigrationMetadata.Id
         {
-            get { return "202407090832563_mn"; }
+            get { return "202407090952478_jk"; }
         }
         
         string IMigrationMetadata.Source
