@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -26,23 +27,22 @@ namespace Cooperatives.Controllers
                 MailMessage message = new MailMessage();
                 SmtpClient smtp = new SmtpClient();
 
-                message.From = new MailAddress(ConfigurationManager.AppSettings["FromEmail"]); // Ensure this matches your 'from' attribute in web.config
+                message.From = new MailAddress(ConfigurationManager.AppSettings["FromEmail"]); 
                 message.To.Add(new MailAddress(toEmail));
                 message.Subject = subject;
                 message.Body = body;
                 message.IsBodyHtml = false;
 
-                smtp.Host = ConfigurationManager.AppSettings["SMTPHost"]; // Ensure this matches your 'host' attribute in web.config
-                smtp.Port = int.Parse(ConfigurationManager.AppSettings["SMTPPort"]); // Ensure this matches your 'port' attribute in web.config
-                smtp.EnableSsl = bool.Parse(ConfigurationManager.AppSettings["EnableSSL"]); // Ensure this matches your 'enableSsl' attribute in web.config
+                smtp.Host = ConfigurationManager.AppSettings["SMTPHost"]; 
+                smtp.Port = int.Parse(ConfigurationManager.AppSettings["SMTPPort"]);
+                smtp.EnableSsl = bool.Parse(ConfigurationManager.AppSettings["EnableSSL"]); 
                 smtp.UseDefaultCredentials = false;
                 smtp.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["SMTPUsername"], ConfigurationManager.AppSettings["SMTPPassword"]); // Ensure these match your credentials in web.config
 
                 smtp.Send(message);
             }
             catch (Exception ex)
-            {
-                // Handle exceptions (logging, etc.)
+            {              
                 Console.WriteLine($"Failed to send email: {ex.Message}");
             }
         }
@@ -271,9 +271,26 @@ namespace Cooperatives.Controllers
             {
                 return result;
             }
-            var data = db.Profiles.ToList();
-            return View(data);
+            return View();
         }
+
+        [HttpGet]
+        [Authorize]
+        public JsonResult GetProfileData()
+        {
+            var userId = User.Identity.Name;
+            var data = db.Profiles.Where(u => u.UserId == userId).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        [Authorize]
+        public JsonResult Evens()
+        {
+            var even = db.Events.Count();
+            var data = db.Events.ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         [Authorize]
         public ActionResult MyContributions()
@@ -331,8 +348,47 @@ namespace Cooperatives.Controllers
             {
                 return result;
             }
+           
             // Admin action logic here
             return View();
+        }
+        [HttpGet]
+        [Authorize(Roles="Admin")]
+        public JsonResult GetProfiles()
+        {         
+            var profilesCount = db.Profiles.Count();
+            var data = db.Profiles.ToList();
+            return Json(data,  JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public JsonResult GetUsers()
+        {
+            var userCount = db.Users.Count();
+            var data = db.Users.Select(u => new
+            {
+              Email =  u.Email,
+                Id = u.UserId,
+               Fname=  u.FirstName,
+                OName = u.OtherName
+            }
+            ).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public JsonResult GetEvents()
+        {
+            var eventCount = db.Events.Count();
+            var data = db.Events.Select(u => new
+            {
+               Name = u.EventName,
+                Id = u.EventId,
+                EDate = u.EventDate,
+             
+            }
+            ).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
         [Authorize(Roles = "Admin")]
         public ActionResult AllEvents()
@@ -342,7 +398,6 @@ namespace Cooperatives.Controllers
             {
                 return result;
             }
-
             // Retrieve all events from the database
             var events = db.Events.Include(e => e.Status).ToList();
 
@@ -413,85 +468,49 @@ namespace Cooperatives.Controllers
             // If ModelState is not valid, return the view with errors
             return View(eventModel);
         }
-        //public ActionResult Statuses()
-        //{
-        //    var result = AuthorizeAdmin();
-        //    if (result != null)
-        //    {
-        //        return result;
-        //    }
-        //    // Retrieve all events from the database
-        //    var data = db.Statuses.ToList();
-
-        //    // Pass the list of events to the view
-        //    return View(data);
-        //}
-        //public ActionResult Status()
-        //{
-        //    var result = AuthorizeAdmin();
-        //    if (result != null)
-        //    {
-        //        return result;
-        //    }
-        //    return View();
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Status(StatusModel statusModel)
-        //{
-        //    var result = AuthorizeAdmin();
-        //    if (result != null)
-        //    {
-        //        return result;
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        // Add the event to the database
-        //        db.Statuses.Add(statusModel);
-        //        db.SaveChanges();
-        //        // Redirect to a confirmation page or other appropriate action
-        //        TempData["Message"] = "Status saved successfully";
-        //        return RedirectToAction("Statuses");
-        //    }
-
-        //    // If ModelState is not valid, return the view with errors
-        //    return View(statusModel);
-        //}
+       
         [Authorize]
         public ActionResult NewProfile()
         {
             return View();
         }
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult NewProfile(ProfileModel profile)
         {
-            var result = Authorize();
-            var userId = Convert.ToString(Session["UserId"]);
-            if (userId != null)
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    profile.UserId = userId;
-                    db.Profiles.Add(profile);
-                    db.SaveChanges();
-                    Response.Redirect("Dashboard");
-                }
+                var userID = User.Identity.Name;
+                profile.UserId = userID;
+                db.Profiles.Add(profile);
+                db.SaveChanges();
+                return Json(new { success = true, redirectUrl = Url.Action("Dashboard") });
             }
-            else
-            {
-                // Handle the case where UserId is null (e.g., user not logged in)
-                ModelState.AddModelError("", "User is not logged in.");
-            }
-            return View (profile);
+
+            // If model state is invalid, return the form with validation errors
+            return Json(new { success = false, html = RenderRazorViewToString("NewProfile", profile) });
         }
+        protected string RenderRazorViewToString(string viewName, object model)
+        {
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                return sw.GetStringBuilder().ToString();
+            }
+        }
+
+
         // GET: Profile/EditProfile
         [Authorize]
         public ActionResult EditProfile(int? id)
         {
-            var profile = db.Profiles.Find(id);
+            var user = User.Identity.Name;
+            var profile = db.Profiles.FirstOrDefault(p => p.UserId == user && p.ID == id);
             if (profile == null)
             {
                 return HttpNotFound();
@@ -499,7 +518,7 @@ namespace Cooperatives.Controllers
             return View(profile);
         }
 
-        // POST: Profile/EditProfile/5
+        // POST: Profile/EditProfile/5  
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -507,17 +526,25 @@ namespace Cooperatives.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = User.Identity.Name;
+                profile.UserId = userId;
                 db.Entry(profile).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Dashboard");
+                return Json(new { success = true });
             }
-            return View(profile);
+
+            // If model state is not valid, return a JSON result with error information
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+            return Json(new { success = false, errors = errors });
         }
+
+
         // GET: Profile/DeleteProfile/5
         [Authorize]
         public ActionResult DeleteProfile(int? id)
         {
-            var profile = db.Profiles.Find(id);
+            var user = User.Identity.Name;
+            var profile = db.Profiles.FirstOrDefault(p=>p.UserId ==user && p.ID ==id);
             if (profile == null)
             {
                 return HttpNotFound();
@@ -530,7 +557,7 @@ namespace Cooperatives.Controllers
         [ValidateAntiForgeryToken]
         [Authorize]
         public ActionResult DeleteProfileConfirmed(int? id)
-        {
+        {          
             var profile = db.Profiles.Find(id);
             db.Profiles.Remove(profile);
             db.SaveChanges();
@@ -596,14 +623,10 @@ namespace Cooperatives.Controllers
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Status(StatusModel status)
-        {
-            //var result = AuthorizeAdmin();
-           // var userId = Convert.ToString(Session["UserId"]);
-         
+        {         
             
                 if (ModelState.IsValid)
-                {
-                    //status.UserId = userId;
+                {               
                     db.Statuses.Add(status);
                     db.SaveChanges();
                     Response.Redirect("Statuses");
@@ -623,14 +646,10 @@ namespace Cooperatives.Controllers
             if (result != null)
             {
                 return result;
-            }
-            // Retrieve all events from the database
-            var status = db.Statuses.ToList();
-
-            // Pass the list of events to the view
+            }          
+            var status = db.Statuses.ToList();       
             return View(status);
-        }
-        // Public method to send reminders for events
+        }     
         public void SendEventReminders()
         {
          var events = db.Events.ToList();                 

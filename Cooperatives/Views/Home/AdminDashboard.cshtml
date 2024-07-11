@@ -1,15 +1,222 @@
-﻿@using Cooperatives.Models
-@model dynamic
+﻿@model List<Cooperatives.Models.ProfileModel>
 @{
     ViewBag.Title = "AdminDashboard";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
-    string profileComplete = Convert.ToString(Session["Email"]);
-
+    string profileComplete = Convert.ToString(User.Identity.Name);
 }
 
-<h2>AdminDashboard</h2>
-<div>
-    <strong>Welcome @Session["FirstName"]</strong>@TempData["success"];
+<div class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <div class="alert alert-info alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Welcome @User.Identity.Name</strong> @TempData["success"]
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card" style="background-color: seagreen; color: white;">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Users Count</h5>
+                        </div>
+                        <div class="card-body">
+                            <h2 class="card-text " id="usersCount">Loading...</h2>
+                            <p class="card-text text-center">Total Users</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card" style="background-color: seagreen; color: white;">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Profiles Count</h5>
+                        </div>
+                        <div class="card-body">
+                            <h2 class="card-text" id="profilesCount">Loading...</h2>
+                            <p class="card-text text-center">Total Profiles</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card" style="background-color: seagreen; color: white;">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Events Count</h5>
+                        </div>
+                        <div class="card-body">
+                            <h2 class="card-text" id="eventCount">Loading...</h2>
+                            <p class="card-text text-center">All Events</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          <div class="row">
+    <!-- Completed Profiles -->
+    <div class="col-md-4 order-md-2">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-center">Completed Profiles</h5>
+                <div class="table-responsive">
+                    <table id="profileTable" class="table table-striped table-bordered" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Phone Number</th>
+                                <th>ID Number</th>
+                                <th>Address</th>
+                                <th>Email</th>
+                                <!-- <th>Action</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be populated via AJAX -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Users -->
+    <div class="col-md-8 order-md-1">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-center">All Users</h5>
+                <div class="table-responsive">
+                    <table id="userTable" class="table table-striped table-bordered" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>FirstName</th>
+                                <th>OtherName</th>
+                                <!-- Other columns as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be populated via AJAX -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("GetProfiles", "Home")',
+            type: 'GET',
+            success: function (data) {
+                if (data && data.length > 0) {
+                    var rows = '';
+                    data.forEach(function (profile) {
+                        rows += '<tr>';
+                        rows += '<td>' + profile.ID + '</td>';
+                        rows += '<td>' + profile.PhoneNumber + '</td>';
+                        rows += '<td>' + profile.IDnumber + '</td>';
+                        rows += '<td>' + profile.Address + '</td>';
+                        rows += '<td>' + profile.Email + '</td>';
+                        rows += '<td>';
+                        @*rows += '<a href="@Url.Action("EditProfile", "Home")/' + profile.ID + '" class="btn btn-primary">Edit</a>';
+                        rows += '<a href="@Url.Action("DeleteProfile", "Home")/' + profile.ID + '" class="btn btn-danger" onclick="return confirm(\'Are you sure you want to delete this profile?\');">Delete</a>';*@
+                        rows += '</td>';
+                        rows += '</tr>';
+                    });
+                    $('#profileTable tbody').html(rows);
+                    $('#profilesCount').text(data.length);
+                   
+                } else {
+                    $('#profileTable tbody').html('<tr><td colspan="6"><span style="color: red;">No profiles found.</span></td></tr>');
+                    $('#profilesCount').text('0');
+            
+                }
+            },
+            error: function (error) {
+                console.error("Error fetching profile data:", error);
+                $('#profileTable tbody').html('<tr><td colspan="6">Error loading profiles. Please try again later.</td></tr>');
+                $('#profilesCount').text('0');
+     
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("GetUsers", "Home")',
+            type: 'GET',
+            success: function (data) {
+                if (data && data.length > 0) {
+                    var rows = '';
+                    data.forEach(function (user) {
+                        rows += '<tr>';
+                        rows += '<td>' + user.Id + '</td>';
+                        rows += '<td>' + user.Email + '</td>';
+                        rows += '<td>' + user.Fname + '</td>';
+                        rows += '<td>' + user.OName + '</td>';                                      
+                        rows += '<td>';
+                        @*rows += '<a href="@Url.Action("EditProfile", "Home")/' + profile.ID + '" class="btn btn-primary">Edit</a>';
+                        rows += '<a href="@Url.Action("DeleteProfile", "Home")/' + profile.ID + '" class="btn btn-danger" onclick="return confirm(\'Are you sure you want to delete this profile?\');">Delete</a>';*@
+                        rows += '</td>';
+                        rows += '</tr>';
+                    });
+                    $('#userTable tbody').html(rows);
+                    $('#usersCount').text(data.length);
+                    
+                } else {
+                    $('#userTable tbody').html('<tr><td colspan="6"><span style="color: red;">No users found.</span></td></tr>');
+                    $('#usersCount').text('0');
+             
+                }
+            },
+            error: function (error) {
+                console.error("Error fetching profile data:", error);
+                $('#userTable tbody').html('<tr><td colspan="6">Error loading profiles. Please try again later.</td></tr>');
+                $('#usersCount').text('0');
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("GetEvents", "Home")',
+            type: 'GET',
+            success: function (data) {
+                if (data && data.length > 0) {
+                    var rows = '';
+                    data.forEach(function (event) {
+                        rows += '<tr>';
+                        rows += '<td>' + event.Name + '</td>';
+                        rows += '<td>' + event.Id + '</td>';
+                       ;
+                        rows += '<td>' + event.EDate + '</td>';
+                        rows += '<td>';
+                        @*rows += '<a href="@Url.Action("EditProfile", "Home")/' + profile.ID + '" class="btn btn-primary">Edit</a>';
+                        rows += '<a href="@Url.Action("DeleteProfile", "Home")/' + profile.ID + '" class="btn btn-danger" onclick="return confirm(\'Are you sure you want to delete this profile?\');">Delete</a>';*@
+                        rows += '</td>';
+                        rows += '</tr>';
+                    });
+                    //$('#userTable tbody').html(rows);
+                    $('#eventCount').text(data.length);
+
+                } else {
+                    //$('#userTable tbody').html('<tr><td colspan="6"><span style="color: red;">No users found.</span></td></tr>');
+                    $('#eventCount').text('0');
+
+                }
+            },
+            error: function (error) {
+                console.error("Error fetching profile data:", error);
+                //$('#userTable tbody').html('<tr><td colspan="6">Error loading profiles. Please try again later.</td></tr>');
+                $('#eventCount').text('0');
+            }
+        });
+    });
+</script>

@@ -1,23 +1,38 @@
-﻿@using Cooperatives.Models
-@model List<Cooperatives.Models.ProfileModel>
+﻿@model List<Cooperatives.Models.ProfileModel>
 
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    string profileComplete = Convert.ToString(Session["Email"]);
+    string profileComplete = Convert.ToString(User.Identity.Name);
 }
+
 <div class="content container-fluid">
     <div class="row">
-
         <div class="alert alert-info alert-dismissible">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Welcome @Session["FirstName"]</strong>@TempData["success"];
+            <strong class="text-center">Welcome @User.Identity.Name</strong>@TempData["success"];
         </div>
-
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card" style="background-color: seagreen; color: white;">
+                    <div class="card-header">
+                        <h5 class="card-text mb-0">Event Count</h5>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="card-text text-center" id="even">Loading...</h2>
+                        <p class="card-text text-center">Events </p>
+                        <div class="card-body text-center">
+                            <a href="@Url.Action("Events", "Home")" class="card-text text-white">Click to view events</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2 class=" text-center"> My Profile</h2>
         <div class="col-md-12">
             <div class="table-responsive">
-                <table width="100%" cellspacing="0">
+                <table id="profileTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>User ID</th>
@@ -29,23 +44,78 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var ev in Model)
-                        {
-                        <tr>
-                            <td>@ev.UserId</td>
-                            <td>@ev.PhoneNumber</td>
-                            <td>@ev.IDnumber</td>
-                            <td>@ev.Address</td>
-                            <td>@ev.Email</td>
-                            <td>
-                                <a href="@Url.Action("EditProfile", "Home", new { id = ev.ID })" class="btn btn-primary">Edit</a>
-                                <a href="@Url.Action("DeleteProfile", "Home", new { id = ev.ID })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this profile?');">Delete</a>
-                            </td>
-                        </tr>
-                        }
+                        <!-- Data will be populated via AJAX -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-</div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("GetProfileData", "Home")',
+            type: 'GET',
+            success: function (data) {
+                if (data && data.length > 0) {
+                    var rows = '';
+                    data.forEach(function (profile) {
+                        rows += '<tr>';
+                        rows += '<td>' + profile.ID + '</td>';
+                        rows += '<td>' + profile.PhoneNumber + '</td>';
+                        rows += '<td>' + profile.IDnumber + '</td>';
+                        rows += '<td>' + profile.Address + '</td>';
+                        rows += '<td>' + profile.Email + '</td>';
+                        rows += '<td>';
+                        rows += '<a href="@Url.Action("EditProfile", "Home")/' + profile.ID + '" class="btn btn-primary">Edit</a>';
+                        rows += '<a href="@Url.Action("DeleteProfile", "Home")/' + profile.ID + '" class="btn btn-danger" onclick="return confirm(\'Are you sure you want to delete this profile?\');">Delete</a>';
+                        rows += '</td>';
+                        rows += '</tr>';
+                    });
+                    $('#profileTable tbody').html(rows);
+                } else {
+                    $('#profileTable tbody').html('<tr><td colspan="6"><span style="color: red;">No profiles found. Under my account, please complete profile to proceed.</span></td></tr>');
+                }
+            },
+            error: function (error) {
+                console.error("Error fetching profile data:", error);
+                $('#profileTable tbody').html('<tr><td colspan="6">Error loading profiles. Please try again later.</td></tr>');
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("Evens", "Home")',
+            type: 'GET',
+            success: function (data) {
+                if (data && data.length > 0) {
+                    var rows = '';
+                    data.forEach(function (event) {
+                        rows += '<tr>';
+                        rows += '<td>' + event.ID + '</td>';
+                        rows += '<td>' + event.PhoneNumber + '</td>';
+                        rows += '<td>' + event.IDnumber + '</td>';
+                        rows += '<td>' + event.Address + '</td>';
+                        rows += '<td>' + event.Email + '</td>';
+                        rows += '<td>';                     
+                        rows += '</td>';
+                        rows += '</tr>';
+                    });
+                   
+                    $('#even').text(data.length);
+
+                } else {
+                    $('#profileTable tbody').html('<tr><td colspan="6"><span style="color: red;">No profiles found. Under my account, please complete profile to proceed.</span></td></tr>');
+                }
+            },
+            error: function (error) {
+                console.error("Error fetching profile data:", error);
+                $('#profileTable tbody').html('<tr><td colspan="6">Error loading profiles. Please try again later.</td></tr>');
+            }
+        });
+    });
+</script>
